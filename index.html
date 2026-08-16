@@ -13,7 +13,12 @@
     <nav>
         <div class="nav-container">
             <a href="#home" class="logo"><img src="logo-emblem.png" alt="" aria-hidden="true"><span class="logo-text"><span class="logo-ready">Ready Set</span><span class="logo-it">IT</span></span></a>
-            <div class="nav-links">
+            <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+                <span class="nav-toggle-bar"></span>
+            </button>
+            <div class="nav-links" id="nav-links">
                 <a href="#services">Services</a>
                 <a href="#process">Our Process</a>
                 <a href="#about">About</a>
@@ -260,16 +265,6 @@
                         </ul>
                     </div>
                     <div class="card animate-on-scroll stagger-2">
-                        <div class="card-icon"><i data-lucide="scan-search"></i></div>
-                        <h3>Security Audits</h3>
-                        <p>Compliance and security posture assessments to keep your business protected and audit-ready.</p>
-                        <ul class="card-list">
-                            <li><i data-lucide="check"></i>Security posture review</li>
-                            <li><i data-lucide="check"></i>Compliance gap analysis</li>
-                            <li><i data-lucide="check"></i>Remediation roadmap</li>
-                        </ul>
-                    </div>
-                    <div class="card animate-on-scroll stagger-3">
                         <div class="card-icon"><i data-lucide="book-open"></i></div>
                         <h3>Documentation & Training</h3>
                         <p>Video tutorials, PDF guides, and live training sessions tailored to your team's technical level.</p>
@@ -490,6 +485,33 @@
         window.addEventListener('scroll', function () {
             nav.classList.toggle('scrolled', window.scrollY > 50);
         }, { passive: true });
+
+        // Mobile nav toggle
+        (function () {
+            var toggle = document.querySelector('.nav-toggle');
+            var links = document.getElementById('nav-links');
+            if (!toggle || !links) return;
+
+            function setOpen(open) {
+                nav.classList.toggle('nav-open', open);
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            }
+
+            toggle.addEventListener('click', function () {
+                setOpen(!nav.classList.contains('nav-open'));
+            });
+
+            // Close the menu after tapping any link
+            links.addEventListener('click', function (e) {
+                if (e.target.closest('a')) setOpen(false);
+            });
+
+            // Close if resized up to desktop so state never gets stuck
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) setOpen(false);
+            }, { passive: true });
+        })();
 
         // Subtle pointer-reactive glow on the hero
         var hero = document.querySelector('.hero');
