@@ -1,0 +1,16 @@
+# Tell Cloudflare's asset uploader what NOT to publish as site assets.
+# Cloudflare installs wrangler/workerd into node_modules during the build;
+# the workerd binary (~128MB) exceeds the 25MB per-asset limit, so exclude it.
+node_modules
+.git
+.github
+.gitignore
+.assetsignore
+
+# Dev / tooling files that aren't part of the website
+graphify-out
+Old Logo
+*.py
+*.npy
+.DS_Store
+.bak-*
